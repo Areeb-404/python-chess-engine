@@ -53,7 +53,11 @@ def main():
                     sq_selected = (row,col)
                     playerClicks.append(sq_selected) #append for both first and second click
                 if len(playerClicks) == 2:  #i.e. it is the second click
-                    
+                    move = chess_engine.move(playerClicks[0],playerClicks[1],gs.board)
+                    print(move.get_chess_notation())
+                    gs.makeMove(move)
+                    sq_selected = ()  #reset the number of click the user has done since the move is made
+                    playerClicks = []
         draw_game_state(screen,gs)
         clock.tick((MAX_FPS))   #type:ignore
         p.display.flip() #flips the board for the other side's turn

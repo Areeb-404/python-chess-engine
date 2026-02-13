@@ -18,23 +18,35 @@ class gamestate():
         ]
         self.whiteToMove = True
         self.movelog = []
+    def makeMove(self,move):
+        self.board[move.startRow][move.startCol] = "--"
+        self.board[move.endRow][move.endCol] = move.pieceMoved
+        self.movelog.append(move)  #log the move for later undo or to show the history
+        self.whiteToMove = not self.whiteToMove   #swap the turns for the players
 
 class move():
 
 # Create mapping dictionary
-    ranks_to_rows = {0: "8", 1: "7", 2: "6", 3: "5",
-                 4: "4", 5: "3", 6: "2", 7: "1"}
-    rows_to_ranks = {v: k for k, v in ranks_to_rows.items()}
+    
+    rows_to_ranks = {0:"8", 1:"7", 2:"6", 3:"5",
+                 4:"4", 5:"3", 6:"2", 7:"1"}
+    ranks_to_rows = {v:k for k,v in rows_to_ranks.items()}
 
-    files_to_cols = {0: "a", 1: "b", 2: "c", 3: "d",
-                 4: "e", 5: "f", 6: "g", 7: "h"}
-    cols_to_files = {v: k for k, v in files_to_cols.items()}
-
+    cols_to_files = {0:"a", 1:"b", 2:"c", 3:"d",
+                 4:"e", 5:"f", 6:"g", 7:"h"}
+    files_to_cols = {v:k for k,v in cols_to_files.items()}
 
     def __init__(self,startSq,endSq,board):
             self.startRow = startSq[0]
             self.startCol = startSq[1]
             self.endRow = endSq[0]
             self.endCol = endSq[1]
-            self.pieceMoved = 
-            self.pieceCaptured = 
+            self.pieceMoved = board[self.startRow][self.startCol]
+            self.pieceCaptured = board[self.endRow][self.endCol]
+
+    def get_chess_notation(self):
+        #can be improved for better capture notation
+        return self.get_rank_file(self.startRow,self.startCol) + self.get_rank_file(self.endRow,self.endCol)
+
+    def get_rank_file(self,r,c):
+        return self.cols_to_files[c] +  self.rows_to_ranks[r]
