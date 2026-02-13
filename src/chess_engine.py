@@ -18,3 +18,23 @@ class gamestate():
         ]
         self.whiteToMove = True
         self.movelog = []
+
+class move():
+
+# Create mapping dictionary
+    ranks_to_rows = {0: "8", 1: "7", 2: "6", 3: "5",
+                 4: "4", 5: "3", 6: "2", 7: "1"}
+    rows_to_ranks = {v: k for k, v in ranks_to_rows.items()}
+
+    files_to_cols = {0: "a", 1: "b", 2: "c", 3: "d",
+                 4: "e", 5: "f", 6: "g", 7: "h"}
+    cols_to_files = {v: k for k, v in files_to_cols.items()}
+
+
+    def __init__(self,startSq,endSq,board):
+            self.startRow = startSq[0]
+            self.startCol = startSq[1]
+            self.endRow = endSq[0]
+            self.endCol = endSq[1]
+            self.pieceMoved = 
+            self.pieceCaptured = 
