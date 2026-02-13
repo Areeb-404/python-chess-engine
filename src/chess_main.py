@@ -3,6 +3,7 @@ This is our main driver file. It will be responsible for handling user input and
 """
 
 import pygame as p
+from pygame.constants import MOUSEBUTTONUP
 import chess_engine
 
 WIDTH = HEIGHT = 512
@@ -32,13 +33,27 @@ def main():
     screen.fill(p.Color("white"))
     gs = chess_engine.gamestate()  #Initializes the constructor and hence the gamestate
     load_Images() #only done once hence before the while loop
-
+    sq_selected = ()  #no square is initially selected tuple(row,col)
+    playerClicks = []  #upto 3 elements in the list to keep track of the user's clicks (two tuples: [(row6,col4),(row4,col4)])
     running = True
+
     while running:
         for e in p.event.get():
             if e.type==p.QUIT:
                 running = False
-
+            elif e.type==p.MOUSEBUTTONDOWN:
+                location = p.mouse.get_pos()  #getting the location of the mouse responsible in x and y
+                col = location[0]//SQ_SIZE
+                row = location[1]//SQ_SIZE
+                #IF user selects the same square twice:
+                if sq_selected == (row,col):
+                    sq_selected = ()     #clicking same square twice means the user wants to deselect hence the values are unassigned
+                    playerClicks = []
+                else:
+                    sq_selected = (row,col)
+                    playerClicks.append(sq_selected) #append for both first and second click
+                if len(playerClicks) == 2:  #i.e. it is the second click
+                    
         draw_game_state(screen,gs)
         clock.tick((MAX_FPS))   #type:ignore
         p.display.flip() #flips the board for the other side's turn
